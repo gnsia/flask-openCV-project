@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <meta http-equiv="refresh" content="5;url='/view'">
+    <script type="text/javascript" src= "https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.bundle.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js"></script>
+  </head>
+
+  <body>
+    <h1> {{ctx.title}} </h1>
+    <img src="/video_feed" width=360 height=240>
+    <canvas id="myChart" style="height:30vh; width:50vw"></canvas>
+  </body>
+  <script>
+    function addGraph(id, labels, data) {
+
+    var ctx = document.getElementById(id);
+    var myChart = new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: labels,
+            datasets: [{
+                label: '그래프 테스트',
+                data: data,
+                borderWidth: 1
+            }]
+        },
+        options: {
+          responsive : true,
+        }
+    });
+
+    }
+    addGraph("myChart",{{ctx.labels|safe}},{{ctx.data}});
+    //addGraph("myChart2",["D",'E','F'],[102,20,110]);
+  </script>
+</html>

@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  </head>
+
+  <body>
+    <div id="container" style="width:100%">
+
+      <div id="header" style="background-color:#FFA500;">
+        <h1 style="margin-bottom:0px;">{{ctx.title}}</h1>
+      </div>
+
+      <div id="menu" style="background-color:#FFD700;height:100%;width:300px;float:left;">
+        <form  action="/upload" method="post" enctype="multipart/form-data">
+            <input type="file" name="file1" accept="images/*" capture="camera">
+            <br>
+            <input type="submit" value="전송">
+
+        </form>
+
+        <hr>
+        <details>
+          <summary>Image_Processing_Day1</summary>
+            <button type=button value="original"> 원본 </button>
+            <button type=button value="gray"> 흑백 </button>
+            <button type=button value="red"> 레드 </button>
+            <button type=button value="green"> 그린 </button>
+            <button type=button value="blue"> 블루 </button>
+        </details>
+
+        <hr>
+
+        <details>
+          <summary>Image_Processing_Day2</summary>
+            알파<input type=text id=alpha size=3>
+            베타<input type=text id=beta size=3>
+            <button type=button value="clipping"> 클리핑 </button>
+            <br>
+            <button type=button value="LUT_invert"> LUT_invert </button>
+            <br>
+            기준<input type=text id=binary size=3><button type=button value="LUT_binary"> LUT_binary </button>
+            <br>
+            감마<input type=text id=gamma size=3><button type=button value="LUT_gamma"> LUT_gamma </button>
+            <br>
+            <button type=button value="hist"> 히스토그램 스트레칭 </button>
+            <button type=button value="histeq"> 히스토그램 평활화 </button>
+            <br>미구현
+            <button type=button value="addweight"> 합성 </button>
+            <br>미구현
+            <button type=button value="Kmeans"> 분리 </button>
+        </details>
+
+        <hr>
+
+        <details>
+          <summary>Image_Processing_Day3</summary>
+            <button type=button value="emboss"> 엠보싱 </button>
+            <button type=button value="sharp"> 샤프닝 </button>
+            <hr>
+            커널크기<input type=text id=size size=3><button type=button value="blur"> 블러 </button>
+            <hr>
+            커널크기<input type=text id=gsize size=3>
+            시그마값<input type=text id=sig size=3>
+            <button type=button value="gaussian"> 가우시안블러! </button>
+            <hr>
+            a1<input type=text id=a1 size=1>a2<input type=text id=a2 size=1>a3<input type=text id=a3 size=1><br>
+            a4<input type=text id=a4 size=1>a5<input type=text id=a5 size=1>a6<input type=text id=a6 size=1><br>
+            a7<input type=text id=a7 size=1>a8<input type=text id=a8 size=1>a9<input type=text id=a9 size=1><br>
+            <button type=button value="filter"> 필터! </button> <br>
+            노이즈값<input type=text id=noise size=3><button type=button value="noise">노이즈</button>
+        </details>
+
+        <hr>
+
+        <details>
+          <summary>Image_Processing_Day4</summary>
+            회전각도<input type=text id=degree size=3><button type=button value="rotation"> 회전 </button>
+        </details>
+
+        <hr>
+
+        <details>
+          <summary>Image_Processing_Day5</summary>
+        </details>
+
+        <hr>
+
+        <details>
+          <summary>Computer_Vision_Day1</summary>
+          <button type=button value="lane">Lane_Detecting</button>
+        </details>
+
+      </div>
+      <div id="content" style="background-color:#EEEEEE;height:100%,width:100%;float:left;">
+        <img id=result width=100%>
+      </div>
+    </div>
+      <script>
+          $("#result").attr("src", "/static/result.jpg?" + new Date());
+
+          $("button").click( function() {
+              url = "/imageprocess?method=" + $(this).val(); /* 서버쪽에 요청하는 url*/
+
+              if ( $(this).val() == "clipping" )
+                  url += "&alpha=" + $("#alpha").val()
+                      + "&beta=" + $("#beta").val();
+
+              if ( $(this).val() == "LUT_binary" )
+                  url += "&binary=" + $("#binary").val();
+
+              if ( $(this).val() == "LUT_gamma" )
+                  url += "&gamma=" + $("#gamma").val();
+
+              if ( $(this).val() == "blur" )
+                  url += "&size=" + $("#size").val();
+
+              if ( $(this).val() == "gaussian" )
+                  url += "&gsize=" + $("#gsize").val()
+                      + "&sig=" + $("#sig").val();
+
+              if ( $(this).val() == "filter" )
+                  url += "&a1=" + $("#a1").val()
+                      + "&a2=" + $("#a2").val()
+                      + "&a3=" + $("#a3").val()
+                      + "&a4=" + $("#a4").val()
+                      + "&a5=" + $("#a5").val()
+                      + "&a6=" + $("#a6").val()
+                      + "&a7=" + $("#a7").val()
+                      + "&a8=" + $("#a8").val()
+                      + "&a9=" + $("#a9").val();
+
+              if ( $(this).val() == "noise" )
+                  url += "&noise=" + $("#noise").val();
+
+              if ( $(this).val() == "rotation" )
+                  url += "&degree=" + $("#degree").val();
+
+              $.get(url,
+                    function(data, status) {
+                          $("#result").attr("src","/static/result.jpg?"+ new Date());
+                  })
+          });
+
+
+      </script>
+  </body>
+</html>
